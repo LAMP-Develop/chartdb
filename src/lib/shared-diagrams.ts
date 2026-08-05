@@ -50,6 +50,35 @@ const withPreservedLayout = (published: Diagram, current: Diagram): Diagram => {
     };
 };
 
+// テーブルの内部 id は取り込みごとに振り直されるため、名前で突き合わせて
+// 絞り込みの対象を新しい id に貼り替える。放置すると存在しない id を指したまま残る。
+const remapFilter = async (
+    storage: StorageContext,
+    diagramId: string,
+    previousTables: DBTable[],
+    currentTables: DBTable[]
+): Promise<void> => {
+    const filter = await storage.getDiagramFilter(diagramId);
+
+    if (!filter?.tableIds?.length) {
+        return;
+    }
+
+    const keyByPreviousId = new Map(
+        previousTables.map((table) => [table.id, tableKey(table)])
+    );
+    const idByKey = new Map(
+        currentTables.map((table) => [tableKey(table), table.id])
+    );
+
+    await storage.updateDiagramFilter(diagramId, {
+        ...filter,
+        tableIds: filter.tableIds
+            .map((tableId) => idByKey.get(keyByPreviousId.get(tableId) ?? ''))
+            .filter((tableId): tableId is string => !!tableId),
+    });
+};
+
 const fetchEntries = async (): Promise<SharedDiagramEntry[]> => {
     const response = await fetch(SHARED_DIAGRAMS_URL, { cache: 'no-store' });
 
@@ -92,6 +121,15 @@ const importEntry = async (
     }
 
     await storage.addDiagram({ diagram });
+
+    if (current) {
+        await remapFilter(
+            storage,
+            entry.id,
+            current.tables ?? [],
+            diagram.tables ?? []
+        );
+    }
 };
 
 export const resolveSharedDiagramId = (
