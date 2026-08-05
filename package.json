@@ -9,6 +9,7 @@
         "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
         "lint:fix": "npm run lint -- --fix",
         "preview": "vite preview",
+        "build:shared-diagram": "vite-node scripts/build-shared-diagram.ts --",
         "prepare": "husky",
         "test": "vitest",
         "test:ci": "vitest run --reporter=verbose --bail=1",
