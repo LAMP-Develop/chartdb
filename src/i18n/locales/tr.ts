@@ -21,6 +21,7 @@ export const tr: LanguageTranslation = {
                 export_sql: 'SQL Olarak Dışa Aktar',
                 export_as: 'Olarak Dışa Aktar',
                 delete_diagram: 'Sil',
+                reset_to_published: 'Reset to Published', // TODO: Translate
             },
             edit: {
                 edit: 'Düzenle',
@@ -64,6 +65,14 @@ export const tr: LanguageTranslation = {
                 'Bu işlem geri alınamaz. Diyagram kalıcı olarak silinecektir.',
             cancel: 'İptal',
             delete: 'Sil',
+        },
+
+        reset_to_published_alert: {
+            title: 'Reset to Published', // TODO: Translate
+            description:
+                'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.', // TODO: Translate
+            cancel: 'Cancel', // TODO: Translate
+            reset: 'Reset', // TODO: Translate
         },
 
         clear_diagram_alert: {

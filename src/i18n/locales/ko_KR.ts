@@ -21,6 +21,7 @@ export const ko_KR: LanguageTranslation = {
                 export_sql: 'SQL로 저장',
                 export_as: '다른 형식으로 저장',
                 delete_diagram: '삭제',
+                reset_to_published: 'Reset to Published', // TODO: Translate
             },
             edit: {
                 edit: '편집',
@@ -63,6 +64,14 @@ export const ko_KR: LanguageTranslation = {
                 '이 작업은 되돌릴 수 없으며 다이어그램이 영구적으로 삭제됩니다.',
             cancel: '취소',
             delete: '삭제',
+        },
+
+        reset_to_published_alert: {
+            title: 'Reset to Published', // TODO: Translate
+            description:
+                'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.', // TODO: Translate
+            cancel: 'Cancel', // TODO: Translate
+            reset: 'Reset', // TODO: Translate
         },
 
         clear_diagram_alert: {

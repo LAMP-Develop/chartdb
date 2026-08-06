@@ -21,6 +21,7 @@ export const ja: LanguageTranslation = {
                 export_sql: 'SQLをエクスポート',
                 export_as: '形式を指定してエクスポート',
                 delete_diagram: '削除',
+                reset_to_published: '公開版にリセット',
             },
             edit: {
                 edit: '編集',
@@ -64,6 +65,14 @@ export const ja: LanguageTranslation = {
                 'この操作は元に戻せません。これによりダイアグラムが永久に削除されます。',
             cancel: 'キャンセル',
             delete: '削除',
+        },
+
+        reset_to_published_alert: {
+            title: '公開版にリセット',
+            description:
+                'この操作は元に戻せません。ローカルでの変更はすべて破棄され、最後に公開されたバージョンに戻ります。',
+            cancel: 'キャンセル',
+            reset: 'リセット',
         },
 
         clear_diagram_alert: {

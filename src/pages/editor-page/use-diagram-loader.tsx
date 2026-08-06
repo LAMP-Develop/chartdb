@@ -5,6 +5,7 @@ import { useFullScreenLoader } from '@/hooks/use-full-screen-spinner';
 import { useRedoUndoStack } from '@/hooks/use-redo-undo-stack';
 import { useStorage } from '@/hooks/use-storage';
 import type { Diagram } from '@/lib/domain/diagram';
+import { importLiveDiagram } from '@/lib/live-sync';
 import { syncSharedDiagrams } from '@/lib/shared-diagrams';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -53,7 +54,21 @@ export const useDiagramLoader = () => {
                 showLoader();
                 resetRedoStack();
                 resetUndoStack();
-                const diagram = await loadDiagram(diagramId);
+                let diagram = await loadDiagram(diagramId);
+
+                if (!diagram) {
+                    try {
+                        if (await importLiveDiagram(storage, diagramId)) {
+                            diagram = await loadDiagram(diagramId);
+                        }
+                    } catch (error) {
+                        console.error(
+                            `Failed to import live diagram ${diagramId}`,
+                            error
+                        );
+                    }
+                }
+
                 if (!diagram) {
                     openOpenDiagramDialog({ canClose: false });
                     hideLoader();

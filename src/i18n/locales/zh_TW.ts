@@ -21,6 +21,7 @@ export const zh_TW: LanguageTranslation = {
                 export_sql: '匯出 SQL',
                 export_as: '匯出為特定格式',
                 delete_diagram: '刪除',
+                reset_to_published: 'Reset to Published', // TODO: Translate
             },
             edit: {
                 edit: '編輯',
@@ -62,6 +63,14 @@ export const zh_TW: LanguageTranslation = {
             description: '此操作無法復原，圖表將被永久刪除。',
             cancel: '取消',
             delete: '刪除',
+        },
+
+        reset_to_published_alert: {
+            title: 'Reset to Published', // TODO: Translate
+            description:
+                'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.', // TODO: Translate
+            cancel: 'Cancel', // TODO: Translate
+            reset: 'Reset', // TODO: Translate
         },
 
         clear_diagram_alert: {

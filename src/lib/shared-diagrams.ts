@@ -174,3 +174,32 @@ export const syncSharedDiagrams = async (
 
     return resolveSharedDiagramId(entries, diagramId);
 };
+
+// 通常のsyncは current.updatedAt >= publishedAt なら何もしない(体裁保持)。
+// ここでは手動編集を破棄してS3由来の正本に戻すため、そのガードとレイアウト引き継ぎを両方外す。
+export const resetDiagramToPublished = async (
+    storage: StorageContext,
+    diagramId: string
+): Promise<void> => {
+    const entries = await fetchEntries();
+    const entry = entries.find((candidate) => candidate.id === diagramId);
+
+    if (!entry) {
+        throw new Error(`No published entry for diagram "${diagramId}"`);
+    }
+
+    const response = await fetch(entry.url, { cache: 'no-store' });
+
+    if (!response.ok) {
+        throw new Error(`${entry.url}: ${response.status}`);
+    }
+
+    const published: Diagram = {
+        ...diagramFromJSONInput(await response.text()),
+        id: entry.id,
+        updatedAt: new Date(entry.updatedAt),
+    };
+
+    await storage.deleteDiagram(entry.id);
+    await storage.addDiagram({ diagram: published });
+};

@@ -21,6 +21,7 @@ export const pt_BR: LanguageTranslation = {
                 export_sql: 'Exportar SQL',
                 export_as: 'Exportar como',
                 delete_diagram: 'Excluir',
+                reset_to_published: 'Reset to Published', // TODO: Translate
             },
             edit: {
                 edit: 'Editar',
@@ -64,6 +65,14 @@ export const pt_BR: LanguageTranslation = {
                 'Esta ação não pode ser desfeita. Isso excluirá permanentemente o diagrama.',
             cancel: 'Cancelar',
             delete: 'Excluir',
+        },
+
+        reset_to_published_alert: {
+            title: 'Reset to Published', // TODO: Translate
+            description:
+                'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.', // TODO: Translate
+            cancel: 'Cancel', // TODO: Translate
+            reset: 'Reset', // TODO: Translate
         },
 
         clear_diagram_alert: {

@@ -21,6 +21,7 @@ export const id_ID: LanguageTranslation = {
                 export_sql: 'Ekspor SQL',
                 export_as: 'Ekspor Sebagai',
                 delete_diagram: 'Hapus',
+                reset_to_published: 'Reset to Published', // TODO: Translate
             },
             edit: {
                 edit: 'Ubah',
@@ -63,6 +64,14 @@ export const id_ID: LanguageTranslation = {
                 'Tindakan ini tidak dapat dibatalkan. Diagram akan dihapus secara permanen.',
             cancel: 'Batal',
             delete: 'Hapus',
+        },
+
+        reset_to_published_alert: {
+            title: 'Reset to Published', // TODO: Translate
+            description:
+                'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.', // TODO: Translate
+            cancel: 'Cancel', // TODO: Translate
+            reset: 'Reset', // TODO: Translate
         },
 
         clear_diagram_alert: {
