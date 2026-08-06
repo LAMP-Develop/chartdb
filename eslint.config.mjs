@@ -74,4 +74,13 @@ export default [
             '@typescript-eslint/no-empty-object-type': 'off',
         },
     },
+    {
+        files: ['e2e/**'],
+
+        languageOptions: {
+            globals: {
+                ...globals.node,
+            },
+        },
+    },
 ];
