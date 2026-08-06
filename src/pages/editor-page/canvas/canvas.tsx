@@ -125,6 +125,10 @@ import { useClickAway } from 'react-use';
 
 const HIGHLIGHTED_EDGE_Z_INDEX = 1;
 const DEFAULT_EDGE_Z_INDEX = 0;
+// Fitting hundreds of tables into view zooms out far enough that every node enters
+// the viewport at once, defeating onlyRenderVisibleElements on the initial load.
+// Skip the automatic fit for diagrams past this size; "Show All" still fits everyone on demand.
+const AUTO_FIT_VIEW_TABLE_LIMIT = 60;
 
 export type EdgeType =
     | RelationshipEdgeType
@@ -392,9 +396,17 @@ export const Canvas: React.FC<CanvasProps> = ({ initialTables }) => {
         shouldForceShowTable,
     ]);
 
+    const tableCountRef = useRef(tables.length);
+    useEffect(() => {
+        tableCountRef.current = tables.length;
+    }, [tables.length]);
+
     useEffect(() => {
         if (!isInitialLoadingNodes) {
             debounce(() => {
+                if (tableCountRef.current > AUTO_FIT_VIEW_TABLE_LIMIT) {
+                    return;
+                }
                 fitView({
                     duration: 200,
                     padding: 0.1,

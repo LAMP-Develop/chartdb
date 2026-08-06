@@ -28,6 +28,9 @@ import { useTheme } from '@/hooks/use-theme';
 import { useLocalConfig } from '@/hooks/use-local-config';
 import { useNavigate } from 'react-router-dom';
 import { useAlert } from '@/context/alert-context/alert-context';
+import { useStorage } from '@/hooks/use-storage';
+import { SHARED_DIAGRAMS_URL } from '@/lib/env';
+import { resetDiagramToPublished } from '@/lib/shared-diagrams';
 
 export interface MenuProps {}
 
@@ -37,7 +40,9 @@ export const Menu: React.FC<MenuProps> = () => {
         deleteDiagram,
         updateDiagramUpdatedAt,
         databaseType,
+        diagramId,
     } = useChartDB();
+    const storage = useStorage();
     const {
         openCreateDiagramDialog,
         openOpenDiagramDialog,
@@ -71,6 +76,11 @@ export const Menu: React.FC<MenuProps> = () => {
         deleteDiagram();
         navigate('/');
     }, [deleteDiagram, navigate]);
+
+    const handleResetToPublishedAction = useCallback(async () => {
+        await resetDiagramToPublished(storage, diagramId);
+        window.location.reload();
+    }, [storage, diagramId]);
 
     const createNewDiagram = () => {
         openCreateDiagramDialog();
@@ -307,6 +317,27 @@ export const Menu: React.FC<MenuProps> = () => {
                             </MenubarItem>
                         </MenubarSubContent>
                     </MenubarSub>
+                    {SHARED_DIAGRAMS_URL ? (
+                        <MenubarItem
+                            onClick={() =>
+                                showAlert({
+                                    title: t('reset_to_published_alert.title'),
+                                    description: t(
+                                        'reset_to_published_alert.description'
+                                    ),
+                                    actionLabel: t(
+                                        'reset_to_published_alert.reset'
+                                    ),
+                                    closeLabel: t(
+                                        'reset_to_published_alert.cancel'
+                                    ),
+                                    onAction: handleResetToPublishedAction,
+                                })
+                            }
+                        >
+                            {t('menu.actions.reset_to_published')}
+                        </MenubarItem>
+                    ) : null}
                     <MenubarSeparator />
                     <MenubarItem
                         onClick={() =>

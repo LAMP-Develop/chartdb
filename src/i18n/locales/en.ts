@@ -21,6 +21,7 @@ export const en = {
                 export_sql: 'Export SQL',
                 export_as: 'Export as',
                 delete_diagram: 'Delete',
+                reset_to_published: 'Reset to Published',
             },
             edit: {
                 edit: 'Edit',
@@ -62,6 +63,14 @@ export const en = {
                 'This action cannot be undone. This will permanently delete the diagram.',
             cancel: 'Cancel',
             delete: 'Delete',
+        },
+
+        reset_to_published_alert: {
+            title: 'Reset to Published',
+            description:
+                'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.',
+            cancel: 'Cancel',
+            reset: 'Reset',
         },
 
         clear_diagram_alert: {

@@ -21,6 +21,7 @@ export const ar: LanguageTranslation = {
                 export_sql: 'SQL تصدير',
                 export_as: 'تصدير كـ',
                 delete_diagram: 'حذف',
+                reset_to_published: 'Reset to Published', // TODO: Translate
             },
             edit: {
                 edit: 'تحرير',
@@ -63,6 +64,14 @@ export const ar: LanguageTranslation = {
                 '.لا يمكن التراجع عن هذا الإجراء. سيتم حذف الرسم البياني بشكل دائم',
             cancel: 'إلغاء',
             delete: 'حذف',
+        },
+
+        reset_to_published_alert: {
+            title: 'Reset to Published', // TODO: Translate
+            description:
+                'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.', // TODO: Translate
+            cancel: 'Cancel', // TODO: Translate
+            reset: 'Reset', // TODO: Translate
         },
 
         clear_diagram_alert: {

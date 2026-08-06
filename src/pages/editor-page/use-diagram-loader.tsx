@@ -5,6 +5,8 @@ import { useFullScreenLoader } from '@/hooks/use-full-screen-spinner';
 import { useRedoUndoStack } from '@/hooks/use-redo-undo-stack';
 import { useStorage } from '@/hooks/use-storage';
 import type { Diagram } from '@/lib/domain/diagram';
+import { importLiveDiagram } from '@/lib/live-sync';
+import { syncSharedDiagrams } from '@/lib/shared-diagrams';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -17,9 +19,11 @@ export const useDiagramLoader = () => {
     const { showLoader, hideLoader } = useFullScreenLoader();
     const { openCreateDiagramDialog, openOpenDiagramDialog } = useDialog();
     const navigate = useNavigate();
-    const { listDiagrams } = useStorage();
+    const storage = useStorage();
+    const { listDiagrams } = storage;
 
     const currentDiagramLoadingRef = useRef<string | undefined>(undefined);
+    const sharedDiagramsSyncedRef = useRef(false);
 
     useEffect(() => {
         if (!config) {
@@ -31,12 +35,40 @@ export const useDiagramLoader = () => {
         }
 
         const loadDefaultDiagram = async () => {
+            if (!sharedDiagramsSyncedRef.current) {
+                sharedDiagramsSyncedRef.current = true;
+                const sharedDiagramId = await syncSharedDiagrams(
+                    storage,
+                    diagramId
+                );
+
+                if (sharedDiagramId && sharedDiagramId !== diagramId) {
+                    navigate(`/diagrams/${sharedDiagramId}`, { replace: true });
+
+                    return;
+                }
+            }
+
             if (diagramId) {
                 setInitialDiagram(undefined);
                 showLoader();
                 resetRedoStack();
                 resetUndoStack();
-                const diagram = await loadDiagram(diagramId);
+                let diagram = await loadDiagram(diagramId);
+
+                if (!diagram) {
+                    try {
+                        if (await importLiveDiagram(storage, diagramId)) {
+                            diagram = await loadDiagram(diagramId);
+                        }
+                    } catch (error) {
+                        console.error(
+                            `Failed to import live diagram ${diagramId}`,
+                            error
+                        );
+                    }
+                }
+
                 if (!diagram) {
                     openOpenDiagramDialog({ canClose: false });
                     hideLoader();
@@ -86,6 +118,7 @@ export const useDiagramLoader = () => {
         showLoader,
         currentDiagram?.id,
         openOpenDiagramDialog,
+        storage,
     ]);
 
     return { initialDiagram };

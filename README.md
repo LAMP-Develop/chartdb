@@ -125,6 +125,44 @@ docker run \
   -p 8080:80 chartdb
 ```
 
+#### Shared diagrams (opt-in auto-sync)
+
+A self-hosted instance can publish diagrams so that every browser opens the same,
+up-to-date diagram under the same URL. This is off unless `SHARED_DIAGRAMS_URL` is set,
+and it never changes the behaviour of diagrams you create yourself.
+
+```bash
+# 1. Generate a diagram from a schema dump (no database connection needed)
+npm run build:shared-diagram -- \
+  --sql ./mysql-schema.sql --id my-app --name "my-app" --out ./shared
+
+# 2. Serve ./shared next to the app and point the container at the index
+docker run \
+  -e SHARED_DIAGRAMS_URL=/shared/index.json \
+  -v $PWD/shared:/usr/share/nginx/html/shared:ro \
+  -p 8080:80 chartdb
+```
+
+On load the app reads the index, and for every entry whose `updatedAt` is newer than the
+local copy it re-imports the diagram under the id given in the index. Table positions,
+widths, colours and collapsed state are carried over from the local copy, so a hand-arranged
+layout survives the update. Re-running step 1 after each schema dump is enough to keep
+every browser current.
+
+`aliases` lets an old URL keep working: a request for an alias id redirects to the
+canonical diagram.
+
+```json
+[
+  {
+    "id": "my-app",
+    "url": "/shared/my-app.json",
+    "updatedAt": "2026-08-05T00:00:00.000Z",
+    "aliases": ["ab12cd34ef56"]
+  }
+]
+```
+
 > **Privacy Note:** ChartDB includes privacy-focused analytics via Fathom Analytics. You can disable this by adding `-e DISABLE_ANALYTICS=true` to the run command or `--build-arg VITE_DISABLE_ANALYTICS=true` when building.
 
 > **Note:** You must configure either Option 1 (OpenAI API key) OR Option 2 (Custom endpoint and model name) for AI capabilities to work. Do not mix the two options.

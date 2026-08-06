@@ -21,6 +21,7 @@ export const ne: LanguageTranslation = {
                 export_sql: 'SQL निर्यात गर्नुहोस्',
                 export_as: 'निर्यात गर्नुहोस्',
                 delete_diagram: 'हटाउनुहोस्',
+                reset_to_published: 'Reset to Published', // TODO: Translate
             },
             edit: {
                 edit: 'सम्पादन',
@@ -64,6 +65,14 @@ export const ne: LanguageTranslation = {
                 'यो कार्य पूर्ववत गर्न सकिँदैन। यो डायाग्राम स्थायी रूपमा हटाउनेछ।',
             cancel: 'रद्द गर्नुहोस्',
             delete: 'हटाउनुहोस्',
+        },
+
+        reset_to_published_alert: {
+            title: 'Reset to Published', // TODO: Translate
+            description:
+                'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.', // TODO: Translate
+            cancel: 'Cancel', // TODO: Translate
+            reset: 'Reset', // TODO: Translate
         },
 
         clear_diagram_alert: {

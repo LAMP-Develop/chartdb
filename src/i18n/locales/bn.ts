@@ -21,6 +21,7 @@ export const bn: LanguageTranslation = {
                 export_sql: 'SQL রপ্তানি করুন',
                 export_as: 'রূপে রপ্তানি করুন',
                 delete_diagram: 'মুছুন',
+                reset_to_published: 'Reset to Published', // TODO: Translate
             },
             edit: {
                 edit: 'সম্পাদনা',
@@ -64,6 +65,14 @@ export const bn: LanguageTranslation = {
                 'এই কাজটি পূর্বাবস্থায় ফিরিয়ে আনা যাবে না। এই ডায়াগ্রাম স্থায়ীভাবে মুছে ফেলা হবে।',
             cancel: 'বাতিল করুন',
             delete: 'মুছুন',
+        },
+
+        reset_to_published_alert: {
+            title: 'Reset to Published', // TODO: Translate
+            description:
+                'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.', // TODO: Translate
+            cancel: 'Cancel', // TODO: Translate
+            reset: 'Reset', // TODO: Translate
         },
 
         clear_diagram_alert: {

@@ -21,6 +21,7 @@ export const uk: LanguageTranslation = {
                 export_sql: 'Експорт SQL',
                 export_as: 'Експортувати як',
                 delete_diagram: 'Видалити',
+                reset_to_published: 'Reset to Published', // TODO: Translate
             },
             edit: {
                 edit: 'Редагувати',
@@ -62,6 +63,14 @@ export const uk: LanguageTranslation = {
                 'Цю дію не можна скасувати. Це призведе до остаточного видалення діаграми.',
             cancel: 'Скасувати',
             delete: 'Видалити',
+        },
+
+        reset_to_published_alert: {
+            title: 'Reset to Published', // TODO: Translate
+            description:
+                'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.', // TODO: Translate
+            cancel: 'Cancel', // TODO: Translate
+            reset: 'Reset', // TODO: Translate
         },
 
         clear_diagram_alert: {

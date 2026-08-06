@@ -21,6 +21,7 @@ export const te: LanguageTranslation = {
                 export_sql: 'SQL ఎగుమతి',
                 export_as: 'వగా ఎగుమతి చేయండి',
                 delete_diagram: 'తొలగించండి',
+                reset_to_published: 'Reset to Published', // TODO: Translate
             },
             edit: {
                 edit: 'సవరించు',
@@ -64,6 +65,14 @@ export const te: LanguageTranslation = {
                 'ఈ చర్యను తిరిగి చేయలేరు. ఇది చిత్రాన్ని శాశ్వతంగా తొలగిస్తుంది.',
             cancel: 'రద్దు',
             delete: 'తొలగించు',
+        },
+
+        reset_to_published_alert: {
+            title: 'Reset to Published', // TODO: Translate
+            description:
+                'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.', // TODO: Translate
+            cancel: 'Cancel', // TODO: Translate
+            reset: 'Reset', // TODO: Translate
         },
 
         clear_diagram_alert: {

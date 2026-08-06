@@ -21,6 +21,7 @@ export const vi: LanguageTranslation = {
                 export_sql: 'Xuất SQL',
                 export_as: 'Xuất thành',
                 delete_diagram: 'Xóa',
+                reset_to_published: 'Reset to Published', // TODO: Translate
             },
             edit: {
                 edit: 'Sửa',
@@ -63,6 +64,14 @@ export const vi: LanguageTranslation = {
                 'Không thể hoàn tác hành động này. Thao tác này sẽ xóa vĩnh viễn sơ đồ.',
             cancel: 'Hủy',
             delete: 'Xóa',
+        },
+
+        reset_to_published_alert: {
+            title: 'Reset to Published', // TODO: Translate
+            description:
+                'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.', // TODO: Translate
+            cancel: 'Cancel', // TODO: Translate
+            reset: 'Reset', // TODO: Translate
         },
 
         clear_diagram_alert: {

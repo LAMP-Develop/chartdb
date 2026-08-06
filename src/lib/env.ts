@@ -12,3 +12,9 @@ export const HIDE_CHARTDB_CLOUD: boolean =
 export const DISABLE_ANALYTICS: boolean =
     (window?.env?.DISABLE_ANALYTICS ??
         import.meta.env.VITE_DISABLE_ANALYTICS) === 'true';
+export const SHARED_DIAGRAMS_URL: string =
+    window?.env?.SHARED_DIAGRAMS_URL ??
+    import.meta.env.VITE_SHARED_DIAGRAMS_URL ??
+    '';
+export const LIVE_SYNC_URL: string =
+    window?.env?.LIVE_SYNC_URL ?? import.meta.env.VITE_LIVE_SYNC_URL ?? '';

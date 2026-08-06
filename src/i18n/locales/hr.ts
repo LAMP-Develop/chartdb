@@ -21,6 +21,7 @@ export const hr: LanguageTranslation = {
                 export_sql: 'Izvezi SQL',
                 export_as: 'Izvezi kao',
                 delete_diagram: 'Izbriši',
+                reset_to_published: 'Reset to Published', // TODO: Translate
             },
             edit: {
                 edit: 'Uredi',
@@ -62,6 +63,14 @@ export const hr: LanguageTranslation = {
                 'Ova radnja se ne može poništiti. Ovo će trajno izbrisati dijagram.',
             cancel: 'Odustani',
             delete: 'Izbriši',
+        },
+
+        reset_to_published_alert: {
+            title: 'Reset to Published', // TODO: Translate
+            description:
+                'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.', // TODO: Translate
+            cancel: 'Cancel', // TODO: Translate
+            reset: 'Reset', // TODO: Translate
         },
 
         clear_diagram_alert: {
