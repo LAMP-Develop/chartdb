@@ -79,6 +79,7 @@ import type { Graph } from '@/lib/graph';
 import { removeVertex } from '@/lib/graph';
 import type { ChartDBEvent } from '@/context/chartdb-context/chartdb-context';
 import { cn, debounce, getOperatingSystem } from '@/lib/utils';
+import { useTableClipboard } from '@/hooks/use-table-clipboard';
 import type { DependencyEdgeType } from './dependency-edge/dependency-edge';
 import { DependencyEdge } from './dependency-edge/dependency-edge';
 import {
@@ -336,6 +337,8 @@ export const Canvas: React.FC<CanvasProps> = ({ initialTables }) => {
         resetFilter,
     } = useDiagramFilter();
     const { checkIfNewTable } = useDiff();
+
+    useTableClipboard();
 
     const shouldForceShowTable = useCallback(
         (tableId: string) => {
@@ -744,6 +747,14 @@ export const Canvas: React.FC<CanvasProps> = ({ initialTables }) => {
                     ),
                 });
                 setOverlapGraph(overlappingTablesInDiagram);
+
+                // Same reason as the initial-load fit above: a stored filter
+                // arriving after load looks like a filter change here, and
+                // fitting hundreds of tables mounts every node at once.
+                if (tableCountRef.current > AUTO_FIT_VIEW_TABLE_LIMIT) {
+                    return;
+                }
+
                 fitView({
                     duration: 500,
                     padding: 0.1,
