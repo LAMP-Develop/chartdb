@@ -23,13 +23,21 @@ const DIAGRAM_PARTS = {
 const tableKey = (table: DBTable): string =>
     `${table.schema ?? ''}.${table.name}`;
 
-const withPreservedLayout = (published: Diagram, current: Diagram): Diagram => {
+export const withPreservedLocalEdits = (
+    published: Diagram,
+    current: Diagram
+): Diagram => {
     const placedTables = new Map(
         (current.tables ?? []).map((table) => [tableKey(table), table])
     );
 
     return {
         ...published,
+        // 公開図はスキーマダンプから生成するので area / note を持たない。
+        // 落とすと公開のたびに全員の書き込みが消え、下で引き継ぐ
+        // parentAreaId も存在しない area を指すことになる。
+        areas: published.areas?.length ? published.areas : current.areas,
+        notes: published.notes?.length ? published.notes : current.notes,
         tables: published.tables?.map((table) => {
             const placed = placedTables.get(tableKey(table));
 
@@ -113,7 +121,7 @@ const importEntry = async (
     };
 
     const diagram = current
-        ? withPreservedLayout(published, current)
+        ? withPreservedLocalEdits(published, current)
         : published;
 
     if (current) {
