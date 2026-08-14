@@ -16,6 +16,8 @@ func newTestMux(t *testing.T) (*http.ServeMux, string) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /diagrams/{id}", handleGetDiagram(dataDir))
 	mux.HandleFunc("PUT /diagrams/{id}", handlePutDiagram(dataDir))
+	mux.HandleFunc("GET /diagrams/{id}/snapshots", handleListSnapshots(dataDir))
+	mux.HandleFunc("POST /diagrams/{id}/restore", handleRestoreSnapshot(dataDir))
 
 	return mux, dataDir
 }

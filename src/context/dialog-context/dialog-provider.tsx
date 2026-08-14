@@ -20,6 +20,7 @@ import type { ExportImageDialogProps } from '@/dialogs/export-image-dialog/expor
 import { ExportImageDialog } from '@/dialogs/export-image-dialog/export-image-dialog';
 import { ExportDiagramDialog } from '@/dialogs/export-diagram-dialog/export-diagram-dialog';
 import { ImportDiagramDialog } from '@/dialogs/import-diagram-dialog/import-diagram-dialog';
+import { RestoreSnapshotDialog } from '@/dialogs/restore-snapshot-dialog/restore-snapshot-dialog';
 
 export const DialogProvider: React.FC<React.PropsWithChildren> = ({
     children,
@@ -134,6 +135,10 @@ export const DialogProvider: React.FC<React.PropsWithChildren> = ({
     const [openImportDiagramDialog, setOpenImportDiagramDialog] =
         useState(false);
 
+    // Restore snapshot dialog
+    const [openRestoreSnapshotDialog, setOpenRestoreSnapshotDialog] =
+        useState(false);
+
     return (
         <dialogContext.Provider
             value={{
@@ -163,6 +168,10 @@ export const DialogProvider: React.FC<React.PropsWithChildren> = ({
                 openImportDiagramDialog: () => setOpenImportDiagramDialog(true),
                 closeImportDiagramDialog: () =>
                     setOpenImportDiagramDialog(false),
+                openRestoreSnapshotDialog: () =>
+                    setOpenRestoreSnapshotDialog(true),
+                closeRestoreSnapshotDialog: () =>
+                    setOpenRestoreSnapshotDialog(false),
             }}
         >
             {children}
@@ -197,6 +206,9 @@ export const DialogProvider: React.FC<React.PropsWithChildren> = ({
             />
             <ExportDiagramDialog dialog={{ open: openExportDiagramDialog }} />
             <ImportDiagramDialog dialog={{ open: openImportDiagramDialog }} />
+            <RestoreSnapshotDialog
+                dialog={{ open: openRestoreSnapshotDialog }}
+            />
         </dialogContext.Provider>
     );
 };

@@ -22,6 +22,7 @@ export const en = {
                 export_as: 'Export as',
                 delete_diagram: 'Delete',
                 reset_to_published: 'Reset to Published',
+                restore_from_backup: 'Restore from Backup...',
             },
             edit: {
                 edit: 'Edit',
@@ -71,6 +72,23 @@ export const en = {
                 'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.',
             cancel: 'Cancel',
             reset: 'Reset',
+        },
+
+        restore_snapshot_dialog: {
+            title: 'Restore from Backup',
+            description:
+                'Pick a saved state to go back to. Restoring replaces the diagram for everyone.',
+            table_columns: {
+                saved_at: 'Saved at',
+                tables: 'Tables',
+                areas: 'Areas',
+                notes: 'Notes',
+            },
+            empty: 'No backups yet.',
+            error: 'Could not load the backups.',
+            restore_error: 'Could not restore this backup.',
+            cancel: 'Cancel',
+            restore: 'Restore',
         },
 
         clear_diagram_alert: {

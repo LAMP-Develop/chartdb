@@ -22,6 +22,7 @@ export const hr: LanguageTranslation = {
                 export_as: 'Izvezi kao',
                 delete_diagram: 'Izbriši',
                 reset_to_published: 'Reset to Published', // TODO: Translate
+                restore_from_backup: 'Restore from Backup...', // TODO: Translate
             },
             edit: {
                 edit: 'Uredi',
@@ -71,6 +72,24 @@ export const hr: LanguageTranslation = {
                 'This action cannot be undone. This will discard any local changes and restore the diagram to the last published version.', // TODO: Translate
             cancel: 'Cancel', // TODO: Translate
             reset: 'Reset', // TODO: Translate
+        },
+
+        // TODO: Translate
+        restore_snapshot_dialog: {
+            title: 'Restore from Backup',
+            description:
+                'Pick a saved state to go back to. Restoring replaces the diagram for everyone.',
+            table_columns: {
+                saved_at: 'Saved at',
+                tables: 'Tables',
+                areas: 'Areas',
+                notes: 'Notes',
+            },
+            empty: 'No backups yet.',
+            error: 'Could not load the backups.',
+            restore_error: 'Could not restore this backup.',
+            cancel: 'Cancel',
+            restore: 'Restore',
         },
 
         clear_diagram_alert: {

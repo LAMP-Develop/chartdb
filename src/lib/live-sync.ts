@@ -57,6 +57,56 @@ export const pullDiagram = async (
     return parseLiveDiagram(await response.text());
 };
 
+// One saved generation of the shared diagram. The server keeps one per day
+// and reports the counts so the picker can show what a generation holds
+// without downloading every one of them.
+export interface DiagramSnapshot {
+    ts: string;
+    tables: number;
+    areas: number;
+    notes: number;
+    size: number;
+}
+
+export const listSnapshots = async (
+    diagramId: string
+): Promise<DiagramSnapshot[]> => {
+    if (!LIVE_SYNC_URL) {
+        return [];
+    }
+
+    const url = `${diagramUrl(diagramId)}/snapshots`;
+    const response = await fetch(url, { cache: 'no-store' });
+
+    if (!response.ok) {
+        throw new Error(`${url}: ${response.status}`);
+    }
+
+    return (await response.json()) as DiagramSnapshot[];
+};
+
+// Restoring replaces the file every browser polls, so it reaches everyone on
+// their next poll rather than only the person who asked for it.
+export const restoreSnapshot = async (
+    diagramId: string,
+    ts: string
+): Promise<void> => {
+    if (!LIVE_SYNC_URL) {
+        return;
+    }
+
+    const url = `${diagramUrl(diagramId)}/restore`;
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ts }),
+    });
+
+    if (!response.ok) {
+        throw new Error(`${url}: ${response.status}`);
+    }
+};
+
 // A browser that has never opened this diagram has nothing in local storage
 // for it, so the editor would give up before useLiveSync ever gets a
 // diagramId to poll with. Seeding storage from the sync server is what lets
