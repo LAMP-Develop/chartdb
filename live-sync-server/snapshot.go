@@ -121,8 +121,18 @@ func saveSnapshot(dataDir, id string, now time.Time) error {
 		return err
 	}
 
-	ts := now.UTC().Format(snapshotLayout)
-	if err := writeFileAtomically(filepath.Join(dir, ts+".json"), body); err != nil {
+	// The name only carries seconds, and a restore right after an edit lands
+	// in the same second as the generation that edit produced. Without this
+	// the restore would overwrite the older state instead of adding to it.
+	ts := now.UTC()
+	for {
+		if _, err := os.Stat(snapshotPath(dataDir, id, ts.Format(snapshotLayout))); errors.Is(err, os.ErrNotExist) {
+			break
+		}
+		ts = ts.Add(time.Second)
+	}
+
+	if err := writeFileAtomically(filepath.Join(dir, ts.Format(snapshotLayout)+".json"), body); err != nil {
 		return err
 	}
 

@@ -178,6 +178,41 @@ func TestRestoreSnapshot_KeepsTheStateItReplaces(t *testing.T) {
 	}
 }
 
+// Both saves land in the same second here, which is exactly what happens when
+// someone restores right after an edit. Keeping only one of them would throw
+// away the older state -- the one they are most likely to want back.
+func TestSaveSnapshot_KeepsBothWhenTwoLandInTheSameSecond(t *testing.T) {
+	dataDir := t.TempDir()
+	now := time.Now()
+
+	if err := os.WriteFile(diagramPath(dataDir, "takeeats"), []byte(`{"tables":[]}`), 0o644); err != nil {
+		t.Fatalf("seed diagram: %v", err)
+	}
+	if err := saveSnapshot(dataDir, "takeeats", now); err != nil {
+		t.Fatalf("first save: %v", err)
+	}
+
+	if err := os.WriteFile(diagramPath(dataDir, "takeeats"), []byte(`{"tables":[{"id":"t1"}]}`), 0o644); err != nil {
+		t.Fatalf("update diagram: %v", err)
+	}
+	if err := saveSnapshot(dataDir, "takeeats", now); err != nil {
+		t.Fatalf("second save: %v", err)
+	}
+
+	metas, err := listSnapshots(dataDir, "takeeats")
+	if err != nil {
+		t.Fatalf("list: %v", err)
+	}
+
+	if len(metas) != 2 {
+		t.Fatalf("want both generations kept, got %d: %+v", len(metas), metas)
+	}
+
+	if metas[0].Tables != 1 || metas[1].Tables != 0 {
+		t.Fatalf("want newest first with 1 then 0 tables, got %+v", metas)
+	}
+}
+
 func TestRestoreSnapshot_RejectsABrokenGeneration(t *testing.T) {
 	mux, dataDir := newTestMux(t)
 
