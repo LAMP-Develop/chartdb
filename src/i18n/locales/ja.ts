@@ -22,6 +22,7 @@ export const ja: LanguageTranslation = {
                 export_as: '形式を指定してエクスポート',
                 delete_diagram: '削除',
                 reset_to_published: '公開版にリセット',
+                restore_from_backup: 'バックアップから戻す...',
             },
             edit: {
                 edit: '編集',
@@ -73,6 +74,23 @@ export const ja: LanguageTranslation = {
                 'この操作は元に戻せません。ローカルでの変更はすべて破棄され、最後に公開されたバージョンに戻ります。',
             cancel: 'キャンセル',
             reset: 'リセット',
+        },
+
+        restore_snapshot_dialog: {
+            title: 'バックアップから戻す',
+            description:
+                '戻したい保存内容を選んでください。全員が見ている図が置き換わります。',
+            table_columns: {
+                saved_at: '保存日時',
+                tables: 'テーブル',
+                areas: 'エリア',
+                notes: 'メモ',
+            },
+            empty: 'バックアップはまだありません。',
+            error: 'バックアップを読み込めませんでした。',
+            restore_error: 'このバックアップに戻せませんでした。',
+            cancel: 'キャンセル',
+            restore: '戻す',
         },
 
         clear_diagram_alert: {

@@ -5,8 +5,13 @@ import { DatabaseType } from '@/lib/domain/database-type';
 
 vi.mock('@/lib/env', () => ({ LIVE_SYNC_URL: '/live-sync' }));
 
-const { importLiveDiagram, pullDiagram, pushDiagram } =
-    await import('../live-sync');
+const {
+    importLiveDiagram,
+    listSnapshots,
+    pullDiagram,
+    pushDiagram,
+    restoreSnapshot,
+} = await import('../live-sync');
 
 const remoteDiagram = {
     id: 'takeeats',
@@ -35,6 +40,7 @@ const respond = (status: number, body = '') =>
         status,
         ok: status >= 200 && status < 300,
         text: async () => body,
+        json: async () => JSON.parse(body),
     }) as Response;
 
 describe('live sync transport', () => {
@@ -86,6 +92,63 @@ describe('live sync transport', () => {
             const [url, init] = vi.mocked(fetch).mock.calls[0];
             expect(url).toBe('/live-sync/diagrams/takeeats');
             expect(init?.method).toBe('PUT');
+        });
+    });
+
+    describe('listSnapshots', () => {
+        it('asks the sync server for this diagram’s saved states', async () => {
+            vi.mocked(fetch).mockResolvedValue(
+                respond(
+                    200,
+                    JSON.stringify([
+                        {
+                            ts: '2026-08-11T00:00:00Z',
+                            tables: 2,
+                            areas: 1,
+                            notes: 0,
+                            size: 10,
+                        },
+                    ])
+                )
+            );
+
+            const snapshots = await listSnapshots('takeeats');
+
+            expect(vi.mocked(fetch).mock.calls[0][0]).toBe(
+                '/live-sync/diagrams/takeeats/snapshots'
+            );
+            expect(snapshots[0].tables).toBe(2);
+        });
+
+        it('raises a failure instead of showing an empty backup list', async () => {
+            vi.mocked(fetch).mockResolvedValue(respond(500, 'boom'));
+
+            await expect(listSnapshots('takeeats')).rejects.toThrow('500');
+        });
+    });
+
+    describe('restoreSnapshot', () => {
+        it('names the state to go back to', async () => {
+            vi.mocked(fetch).mockResolvedValue(respond(204));
+
+            await restoreSnapshot('takeeats', '2026-08-11T00:00:00Z');
+
+            const [url, init] = vi.mocked(fetch).mock.calls[0];
+            expect(url).toBe('/live-sync/diagrams/takeeats/restore');
+            expect(init?.method).toBe('POST');
+            expect(JSON.parse(init?.body as string)).toEqual({
+                ts: '2026-08-11T00:00:00Z',
+            });
+        });
+
+        // A silent failure here would leave everyone looking at the state the
+        // person meant to replace, with the UI claiming it worked.
+        it('raises when the server refuses the restore', async () => {
+            vi.mocked(fetch).mockResolvedValue(respond(409, 'broken snapshot'));
+
+            await expect(
+                restoreSnapshot('takeeats', '2026-08-11T00:00:00Z')
+            ).rejects.toThrow('409');
         });
     });
 

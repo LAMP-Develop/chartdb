@@ -29,7 +29,7 @@ import { useLocalConfig } from '@/hooks/use-local-config';
 import { useNavigate } from 'react-router-dom';
 import { useAlert } from '@/context/alert-context/alert-context';
 import { useStorage } from '@/hooks/use-storage';
-import { SHARED_DIAGRAMS_URL } from '@/lib/env';
+import { LIVE_SYNC_URL, SHARED_DIAGRAMS_URL } from '@/lib/env';
 import { resetDiagramToPublished } from '@/lib/shared-diagrams';
 
 export interface MenuProps {}
@@ -51,6 +51,7 @@ export const Menu: React.FC<MenuProps> = () => {
         openExportImageDialog,
         openExportDiagramDialog,
         openImportDiagramDialog,
+        openRestoreSnapshotDialog,
     } = useDialog();
     const { showAlert } = useAlert();
     const { setTheme, theme } = useTheme();
@@ -336,6 +337,13 @@ export const Menu: React.FC<MenuProps> = () => {
                             }
                         >
                             {t('menu.actions.reset_to_published')}
+                        </MenubarItem>
+                    ) : null}
+                    {LIVE_SYNC_URL ? (
+                        <MenubarItem
+                            onClick={() => openRestoreSnapshotDialog()}
+                        >
+                            {t('menu.actions.restore_from_backup')}
                         </MenubarItem>
                     ) : null}
                     <MenubarSeparator />
